@@ -151,13 +151,134 @@ This module also includes a potentiometer that will fix the threshold value, & t
 
 ##  Program 
 
+```
+#include "main.h"
 
- 
+#include "stdio.h"
 
-## Result :
- 
+#if defined(_GNUC_)
+
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#endif
+uint16_t readValue;
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+
+UART_HandleTypeDef huart2;
+
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_ADC1_Init(void);
+static void MX_USART2_UART_Init(void);
+/* USER CODE BEGIN PFP */
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_USART2_UART_Init();
+  /* USER CODE BEGIN 2 */
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+	  HAL_ADC_Start(&hadc1);
+	  	 	  	  	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+	  	 	  	  	  readValue = HAL_ADC_GetValue(&hadc1);
+	  	 	  	  	  printf("Read value : %d\n", readValue);
+
+	  	 	  	  	  uint32_t soilmoist = 100 - (readValue / 40.96);
+	  	 	  	  	  printf("Soil moisture : %ld %%\n", soilmoist);
+	  	 	  	  	  HAL_Delay(1000);
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+PUTCHAR_PROTOTYPE
+{
+	HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+
+	return ch;
+}
+```
+
 ## Output  :
 
+![WhatsApp Image 2025-11-20 at 10 32 07_fab2d39e](https://github.com/user-attachments/assets/9d5f481c-aa70-44b6-a034-1e0087534051)
+
+
+<img width="1920" height="1080" alt="Screenshot 2025-11-20 102843" src="https://github.com/user-attachments/assets/9ddeae6a-c4b2-4d61-9738-92d5550b9641" />
+
+
+## Result :
+Thus configure ADC channel for interfacing an analog sensor and read the values on the com port successfully.
+ 
+
+
+ 
 
 
 
